@@ -1,434 +1,546 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WikiVerse | The Universal Encyclopedia</title>
-    <style>
-        /* CSS VARIABLES & THEMES */
-        :root {
-            --primary: #003366;
-            --primary-light: #004080;
-            --accent: #d4af37;
-            --bg: #ffffff;
-            --sidebar-bg: #f8f9fa;
-            --text: #333333;
-            --border: #cccccc;
-            --card-bg: #ffffff;
-            --hero-bg: #003366;
-            --hero-text: #ffffff;
-            --transition: all 0.3s ease;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WikiVerse | The Universal Encyclopedia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: #2a2a3e;
+  --gold: #d4af37;
+  --gold-light: #f0cd6a;
+  --blue: #1a3a6e;
+  --blue-light: #2a5cb8;
+  --text: #e8e4d8;
+  --text-muted: #8a8a9a;
+  --accent: #c0392b;
+}
+[data-theme="light"] {
+  --bg: #f5f0e8;
+  --surface: #ffffff;
+  --surface2: #eee8d8;
+  --border: #d0c8b0;
+  --text: #1a1a2e;
+  --text-muted: #5a5a7a;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--gold-light); text-decoration: underline; }
 
-        [data-theme="dark"] {
-            --primary: #d4af37;
-            --primary-light: #f1c40f;
-            --accent: #ffffff;
-            --bg: #121212;
-            --sidebar-bg: #1e1e1e;
-            --text: #e0e0e0;
-            --border: #444444;
-            --card-bg: #252525;
-            --hero-bg: #0a0a0a;
-            --hero-text: #d4af37;
-        }
+/* HEADER */
+header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--gold);
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: -1px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.logo span { color: var(--text); font-weight: 400; font-size: 1rem; display: block; letter-spacing: 3px; font-family: 'Source Serif 4', serif; }
+.search-bar {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  gap: 0;
+  max-width: 500px;
+}
+.search-bar input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+.search-bar input:focus { border-color: var(--gold); }
+.search-bar button {
+  padding: 0.6rem 1rem;
+  background: var(--gold);
+  color: #0a0a0f;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.header-actions { display: flex; gap: 0.5rem; align-items: center; }
+.theme-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
 
-        /* RESET & BASE */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); transition: var(--transition); line-height: 1.6; }
-        a { text-decoration: none; color: var(--primary); cursor: pointer; }
-        a:hover { text-decoration: underline; }
-        ul { list-style: none; }
+/* NAV */
+nav {
+  background: var(--blue);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-btn {
+  padding: 0.7rem 1.2rem;
+  background: none;
+  border: none;
+  color: #ccd;
+  cursor: pointer;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(212,175,55,0.08);
+}
 
-        /* LAYOUT */
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+/* MAIN */
+main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
 
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 10px; }
-        .logo i { font-style: normal; font-size: 1.8rem; }
+/* HOME PAGE */
+.hero {
+  background: linear-gradient(135deg, var(--blue) 0%, #0a0a2e 100%);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(212,175,55,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.hero p {
+  color: #aab;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+.hero-search {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 0;
+}
+.hero-search input {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--gold);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+.hero-search input::placeholder { color: #889; }
+.hero-search button {
+  padding: 0.8rem 1.5rem;
+  background: var(--gold);
+  color: #0a0a0f;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+}
 
-        .nav-tools { display: flex; align-items: center; gap: 20px; }
-        
-        .search-container { position: relative; }
-        #search-input {
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: none;
-            width: 250px;
-            outline: none;
-        }
+/* CATEGORIES */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.category-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.category-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+.category-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(212,175,55,0.15); }
+.category-card:hover::before { transform: scaleX(1); }
+.category-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.category-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 0.25rem; }
+.category-card p { font-size: 0.85rem; color: var(--text-muted); }
 
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 5px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
+/* ARTICLE GRID */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.article-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.article-card:hover { border-color: var(--gold); box-shadow: 0 2px 15px rgba(212,175,55,0.1); }
+.article-tag {
+  display: inline-block;
+  background: var(--blue);
+  color: var(--gold);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.article-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--text); }
+.article-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
-        main { min-height: 80vh; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; }
+/* ARTICLE PAGE */
+.article-layout { display: grid; grid-template-columns: 1fr 260px; gap: 2rem; }
+@media (max-width: 700px) { .article-layout { grid-template-columns: 1fr; } }
+.article-content {}
+.article-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--gold); }
+.article-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--text); margin-bottom: 0.5rem; }
+.article-meta { color: var(--text-muted); font-size: 0.85rem; font-style: italic; }
+.article-body h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin: 1.5rem 0 0.75rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border); }
+.article-body h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text); margin: 1rem 0 0.5rem; }
+.article-body p { line-height: 1.8; margin-bottom: 1rem; color: var(--text); }
+.article-body ul { margin: 0.75rem 0 1rem 1.5rem; }
+.article-body li { line-height: 1.7; color: var(--text); margin-bottom: 0.25rem; }
+.infobox {
+  background: var(--surface);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.85rem;
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+}
+.infobox h4 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 0.75rem; font-size: 1rem; text-align: center; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.info-row { display: flex; gap: 0.5rem; margin-bottom: 0.4rem; }
+.info-label { color: var(--text-muted); min-width: 80px; flex-shrink: 0; }
+.info-value { color: var(--text); }
+.toc { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; }
+.toc h4 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 0.5rem; font-size: 0.95rem; }
+.toc ol { margin-left: 1.2rem; }
+.toc li { margin-bottom: 0.25rem; font-size: 0.85rem; }
+.toc a { color: var(--text-muted); }
+.toc a:hover { color: var(--gold); }
 
-        /* HOME PAGE */
-        .hero {
-            background: var(--hero-bg);
-            color: var(--hero-text);
-            padding: 4rem 2rem;
-            text-align: center;
-            border-radius: 15px;
-            margin-bottom: 3rem;
-        }
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+/* SEARCH RESULTS */
+.search-results-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.search-result-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.search-result-item:hover { border-color: var(--gold); }
+.search-result-item h3 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 0.25rem; }
+.search-result-item p { font-size: 0.85rem; color: var(--text-muted); }
 
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .category-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            transition: var(--transition);
-        }
-        .category-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .category-card h3 { color: var(--primary); margin-bottom: 1rem; }
+/* BACK BTN */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--gold);
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  padding: 0;
+}
+.back-btn:hover { color: var(--gold-light); }
 
-        /* ARTICLE PAGE */
-        .article-container { display: grid; grid-template-columns: 250px 1fr; gap: 40px; }
-        .toc {
-            background: var(--sidebar-bg);
-            padding: 20px;
-            border-radius: 8px;
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-        .toc h4 { margin-bottom: 10px; border-bottom: 1px solid var(--border); }
-        .toc li { margin-bottom: 8px; font-size: 0.9rem; }
+/* FOOTER */
+footer {
+  background: var(--surface);
+  border-top: 2px solid var(--gold);
+  padding: 1.5rem 1rem;
+  margin-top: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+footer .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
 
-        .article-content h1 { font-size: 2.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .article-meta { color: #666; font-style: italic; margin-bottom: 2rem; }
-        .article-image {
-            width: 100%;
-            height: 300px;
-            background: #eee;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            border-radius: 8px;
-            border: 2px dashed var(--border);
-        }
-        .section-block { margin-bottom: 2rem; }
-        .section-block h2 { margin-bottom: 1rem; color: var(--primary); border-bottom: 1px solid var(--border); }
-
-        /* FOOTER */
-        footer {
-            background: var(--sidebar-bg);
-            padding: 3rem 5%;
-            margin-top: 4rem;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-        .footer-links { margin-bottom: 1rem; }
-        .footer-links a { margin: 0 15px; font-size: 0.9rem; }
-
-        /* MOBILE RESPONSIVE */
-        @media (max-width: 768px) {
-            .article-container { grid-template-columns: 1fr; }
-            .toc { display: none; }
-            header { flex-direction: column; gap: 15px; }
-            #search-input { width: 100%; }
-        }
-
-        /* SEARCH DROPDOWN */
-        #search-results {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            display: none;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 1001;
-        }
-        .search-item { padding: 10px; color: var(--text); border-bottom: 1px solid var(--border); cursor: pointer; }
-        .search-item:hover { background: var(--sidebar-bg); }
-    </style>
+/* UTIL */
+.hidden { display: none !important; }
+.page { animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.no-results { text-align: center; padding: 3rem; color: var(--text-muted); font-style: italic; }
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="logo" onclick="app.navigate('home')">
-            <span style="color: var(--accent)">Wiki</span>Verse
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('home')">WikiVerse<span>THE UNIVERSAL ENCYCLOPEDIA</span></div>
+    <div class="search-bar">
+      <input type="text" id="headerSearch" placeholder="Search articles..." onkeydown="if(event.key==='Enter')doSearch()">
+      <button onclick="doSearch()">🔍</button>
+    </div>
+    <div class="header-actions">
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showPage('home');setActive(this)">🏠 Home</button>
+    <button class="nav-btn" onclick="showCategory('games');setActive(this)">🎮 Games</button>
+    <button class="nav-btn" onclick="showCategory('history');setActive(this)">📜 History</button>
+    <button class="nav-btn" onclick="showCategory('music');setActive(this)">🎵 Music</button>
+    <button class="nav-btn" onclick="showCategory('more');setActive(this)">🌍 More</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page">
+    <div class="hero">
+      <h1>WikiVerse</h1>
+      <p>Your gateway to knowledge — Games, History, Music & beyond</p>
+      <div class="hero-search">
+        <input type="text" id="heroSearch" placeholder="Search any topic..." onkeydown="if(event.key==='Enter')doSearch()">
+        <button onclick="doSearch()">Search</button>
+      </div>
+    </div>
+
+    <h2 class="section-title">📚 Browse Categories</h2>
+    <div class="categories">
+      <div class="category-card" onclick="showCategory('games')">
+        <div class="category-icon">🎮</div>
+        <h3>Games</h3>
+        <p>Video games, history, characters & franchises</p>
+      </div>
+      <div class="category-card" onclick="showCategory('history')">
+        <div class="category-icon">📜</div>
+        <h3>History</h3>
+        <p>World events, civilizations & historical figures</p>
+      </div>
+      <div class="category-card" onclick="showCategory('music')">
+        <div class="category-icon">🎵</div>
+        <h3>Music</h3>
+        <p>Artists, genres, albums & music history</p>
+      </div>
+      <div class="category-card" onclick="showCategory('more')">
+        <div class="category-icon">🌍</div>
+        <h3>More</h3>
+        <p>Science, movies, sports & more topics</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">⭐ Featured Articles</h2>
+    <div class="article-grid" id="featured-grid"></div>
+  </div>
+
+  <!-- CATEGORY PAGE -->
+  <div id="page-category" class="page hidden">
+    <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+    <h2 class="section-title" id="category-title"></h2>
+    <div class="article-grid" id="category-grid"></div>
+  </div>
+
+  <!-- ARTICLE PAGE -->
+  <div id="page-article" class="page hidden">
+    <button class="back-btn" id="article-back-btn">← Back</button>
+    <div class="article-layout">
+      <div class="article-content">
+        <div class="toc" id="article-toc"></div>
+        <div class="article-header">
+          <div class="article-meta" id="article-meta"></div>
+          <h1 id="article-title"></h1>
         </div>
-        <div class="nav-tools">
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search WikiVerse..." oninput="app.search(this.value)">
-                <div id="search-results"></div>
-            </div>
-            <button class="theme-toggle" onclick="app.toggleTheme()">🌓 Mode</button>
-        </div>
-    </header>
+        <div class="article-body" id="article-body"></div>
+      </div>
+      <aside>
+        <div class="infobox" id="article-infobox"></div>
+      </aside>
+    </div>
+  </div>
 
-    <main id="app-viewport">
-        <!-- Content dynamically injected here -->
-    </main>
+  <!-- SEARCH RESULTS PAGE -->
+  <div id="page-search" class="page hidden">
+    <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+    <h2 class="section-title" id="search-title"></h2>
+    <div id="search-results-container"></div>
+  </div>
 
-    <footer>
-        <div class="footer-links">
-            <a onclick="app.navigate('home')">Home</a>
-            <a onclick="app.navigate('category', 'Games')">Games</a>
-            <a onclick="app.navigate('category', 'History')">History</a>
-            <a onclick="app.navigate('category', 'Music')">Music</a>
-            <a onclick="app.navigate('about')">About WikiVerse</a>
-        </div>
-        <p>&copy; 2024 WikiVerse Encyclopedia. All rights reserved.</p>
-    </footer>
+</main>
 
-    <script>
-        // DATA STORE
-        const wikiData = {
-            articles: [
-                {
-                    id: 'mario',
-                    title: 'Super Mario Bros',
-                    category: 'Games',
-                    summary: 'A platform game developed and published by Nintendo.',
-                    content: [
-                        { heading: 'Overview', text: 'Super Mario Bros. is a platform game developed and published by Nintendo in 1985. It is the successor to the 1983 arcade game Mario Bros. and the first in the Super Mario series.' },
-                        { heading: 'Gameplay', text: 'In Super Mario Bros., the player controls Mario, or his brother Luigi in the multiplayer mode, as they traverse the Mushroom Kingdom to rescue Princess Toadstool from King Koopa (later known as Bowser).' },
-                        { heading: 'Legacy', text: 'It is frequently cited as one of the greatest video games of all time, with praise given to its precise controls. It is one of the best-selling games of all time.' }
-                    ],
-                    sources: ['Nintendo Archive', 'Video Game History Foundation']
-                },
-                {
-                    id: 'zelda',
-                    title: 'The Legend of Zelda',
-                    category: 'Games',
-                    summary: 'An action-adventure game franchise created by Shigeru Miyamoto.',
-                    content: [
-                        { heading: 'Premise', text: 'The series centers on various incarnations of Link, a courageous young man, and Princess Zelda, the mortal reincarnation of the goddess Hylia.' },
-                        { heading: 'World Building', text: 'Most games take place in the kingdom of Hyrule, a land of high fantasy featuring diverse races like the Gorons, Zoras, and Gerudo.' }
-                    ],
-                    sources: ['Hyrule Historia', 'IGN Classics']
-                },
-                {
-                    id: 'minecraft',
-                    title: 'Minecraft',
-                    category: 'Games',
-                    summary: 'A sandbox video game developed by Mojang Studios.',
-                    content: [
-                        { heading: 'Mechanics', text: 'In Minecraft, players explore a blocky, procedurally generated 3D world with virtually infinite terrain, and may discover and extract raw materials, craft tools and items.' },
-                        { heading: 'Modes', text: 'Depending on the game mode, players can fight computer-controlled mobs, as well as either cooperate with or compete against other players in the same world.' }
-                    ],
-                    sources: ['Mojang Official Site', 'PC Gamer']
-                },
-                {
-                    id: 'wwii',
-                    title: 'World War II',
-                    category: 'History',
-                    summary: 'A global war that lasted from 1939 to 1945.',
-                    content: [
-                        { heading: 'Origins', text: 'World War II was a global conflict that lasted from 1939 to 1945. The vast majority of the world\'s countries, including all the great powers, fought as part of two opposing military alliances: the Allies and the Axis.' },
-                        { heading: 'The Holocaust', text: 'A central aspect of the war was the systematic, state-sponsored genocide of six million Jews by the Nazi regime.' }
-                    ],
-                    sources: ['Britannica', 'National WWII Museum']
-                },
-                {
-                    id: 'roman-empire',
-                    title: 'The Roman Empire',
-                    category: 'History',
-                    summary: 'The post-Republican period of ancient Rome.',
-                    content: [
-                        { heading: 'Rise to Power', text: 'The Roman Empire was the post-Republican period of ancient Rome. As a polity, it included large territorial holdings around the Mediterranean Sea in Europe, North Africa, and Western Asia.' },
-                        { heading: 'Engineering', text: 'The Romans are famous for their engineering feats, including the construction of aqueducts, roads, and large buildings like the Colosseum.' }
-                    ],
-                    sources: ['History.com', 'Oxford University Press']
-                },
-                {
-                    id: 'renaissance',
-                    title: 'The Renaissance',
-                    category: 'History',
-                    summary: 'A fervent period of European cultural, artistic, and political "rebirth".',
-                    content: [
-                        { heading: 'Overview', text: 'The Renaissance was a period in European history marking the transition from the Middle Ages to modernity and covering the 15th and 16th centuries.' },
-                        { heading: 'Famous Figures', text: 'This era is known for geniuses like Leonardo da Vinci, Michelangelo, and Galileo Galilei.' }
-                    ],
-                    sources: ['Metropolitan Museum of Art', 'Renaissance Society']
-                },
-                {
-                    id: 'beatles',
-                    title: 'The Beatles',
-                    category: 'Music',
-                    summary: 'An English rock band formed in Liverpool in 1960.',
-                    content: [
-                        { heading: 'Impact', text: 'The Beatles were an English rock band formed in Liverpool in 1960. They are the best-selling music act of all time, with estimated sales of 600 million units worldwide.' },
-                        { heading: 'Members', text: 'The core lineup consisted of John Lennon, Paul McCartney, George Harrison, and Ringo Starr.' }
-                    ],
-                    sources: ['Rolling Stone', 'The Beatles Official']
-                },
-                {
-                    id: 'hip-hop',
-                    title: 'Hip-Hop History',
-                    category: 'Music',
-                    summary: 'A culture and art movement that originated in the Bronx in the 1970s.',
-                    content: [
-                        { heading: 'Origins', text: 'Hip hop or hip-hop is a culture and art movement that was created by African Americans, Latino Americans and Caribbean Americans in the Bronx, New York City.' },
-                        { heading: 'Four Elements', text: 'The four central pillars are MCing (rapping), DJing, Breakdancing, and Graffiti art.' }
-                    ],
-                    sources: ['Smithsonian National Museum', 'Hip Hop Archive']
-                },
-                {
-                    id: 'classical',
-                    title: 'Classical Music',
-                    category: 'Music',
-                    summary: 'Art music produced or rooted in the traditions of Western culture.',
-                    content: [
-                        { heading: 'Eras', text: 'Classical music is generally divided into several periods: Medieval, Renaissance, Baroque, Classical, Romantic, and the 20th century.' },
-                        { heading: 'Instruments', text: 'The orchestra is the primary medium for classical performance, featuring strings, woodwinds, brass, and percussion.' }
-                    ],
-                    sources: ['ClassicFM', 'BBC Music Magazine']
-                }
-            ]
-        };
+<footer>
+  <div class="footer-links">
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showCategory('games')">Games</a>
+    <a href="#" onclick="showCategory('history')">History</a>
+    <a href="#" onclick="showCategory('music')">Music</a>
+    <a href="#" onclick="showCategory('more')">More</a>
+  </div>
+  <p>© 2025 WikiVerse — The Universal Encyclopedia. All rights reserved.</p>
+</footer>
 
-        // APP ENGINE
-        const app = {
-            currentTheme: 'light',
-            
-            init: function() {
-                this.navigate('home');
-                // Close search on click outside
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.search-container')) {
-                        document.getElementById('search-results').style.display = 'none';
-                    }
-                });
-            },
-
-            toggleTheme: function() {
-                this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', this.currentTheme);
-            },
-
-            navigate: function(page, params) {
-                const viewport = document.getElementById('app-viewport');
-                window.scrollTo(0, 0);
-
-                if (page === 'home') {
-                    viewport.innerHTML = this.renderHome();
-                } else if (page === 'category') {
-                    viewport.innerHTML = this.renderCategory(params);
-                } else if (page === 'article') {
-                    viewport.innerHTML = this.renderArticle(params);
-                } else if (page === 'about') {
-                    viewport.innerHTML = this.renderAbout();
-                }
-            },
-
-            search: function(query) {
-                const resultsDiv = document.getElementById('search-results');
-                if (query.length < 2) {
-                    resultsDiv.style.display = 'none';
-                    return;
-                }
-
-                const filtered = wikiData.articles.filter(a => 
-                    a.title.toLowerCase().includes(query.toLowerCase()) || 
-                    a.category.toLowerCase().includes(query.toLowerCase())
-                );
-
-                if (filtered.length > 0) {
-                    resultsDiv.innerHTML = filtered.map(a => `
-                        <div class="search-item" onclick="app.navigate('article', '${a.id}'); document.getElementById('search-results').style.display='none'; document.getElementById('search-input').value=''">
-                            <strong>${a.title}</strong> <small>(${a.category})</small>
-                        </div>
-                    `).join('');
-                    resultsDiv.style.display = 'block';
-                } else {
-                    resultsDiv.style.display = 'none';
-                }
-            },
-
-            renderHome: function() {
-                return `
-                    <div class="hero">
-                        <h1>Welcome to WikiVerse</h1>
-                        <p>Exploring the depths of Games, History, Music, and beyond.</p>
-                    </div>
-                    <div class="categories-grid">
-                        <div class="category-card" onclick="app.navigate('category', 'Games')">
-                            <h3>🎮 Games</h3>
-                            <p>From retro classics to modern masterpieces.</p>
-                        </div>
-                        <div class="category-card" onclick="app.navigate('category', 'History')">
-                            <h3>📜 History</h3>
-                            <p>Journey through the timeline of human civilization.</p>
-                        </div>
-                        <div class="category-card" onclick="app.navigate('category', 'Music')">
-                            <h3>🎵 Music</h3>
-                            <p>The sounds, rhythms, and artists that define eras.</p>
-                        </div>
-                        <div class="category-card" onclick="app.navigate('about')">
-                            <h3>✨ More</h3>
-                            <p>Discover science, space, and the unknown.</p>
-                        </div>
-                    </div>
-                `;
-            },
-
-            renderCategory: function(catName) {
-                const articles = wikiData.articles.filter(a => a.category === catName);
-                return `
-                    <h1 style="margin-bottom: 2rem;">Category: ${catName}</h1>
-                    <div class="categories-grid">
-                        ${articles.map(a => `
-                            <div class="category-card" onclick="app.navigate('article', '${a.id}')">
-                                <h3>${a.title}</h3>
-                                <p>${a.summary}</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <p style="margin-top: 2rem;"><a onclick="app.navigate('home')">← Back to Home</a></p>
-                `;
-            },
-
-            renderArticle: function(id) {
-                const article = wikiData.articles.find(a => a.id === id);
-                if (!article) return `<h1>Article not found</h1>`;
-
-                return `
-                    <div class="article-container">
-                        <aside class="toc">
-                            <h4>Contents</h4>
-                            <ul>
-                                ${article.content.map((c, i) => `<li><a href="#section-${i}">${c.heading}</a></li>`).join('')}
-                                <li><a href="#sources">Sources</a></li>
-                            </ul>
-                        </aside>
-                        <div class="article-content">
-                            <h1>${article.title}</h1>
-                            <p class
+<script>
+// ===================== DATA =====================
+const articles = [
+  // GAMES
+  {
+    id: 'super-mario-bros',
+    title: 'Super Mario Bros.',
+    category: 'games',
+    tag: '🎮 Games',
+    summary: 'The iconic platformer that defined a generation and saved the video game industry.',
+    infobox: { 'Developer': 'Nintendo', 'Released': '1985', 'Platform': 'NES', 'Genre': 'Platformer', 'Designer': 'Shigeru Miyamoto' },
+    toc: ['Overview', 'Gameplay', 'Development', 'Legacy'],
+    body: `<h2>Overview</h2>
+<p>Super Mario Bros. is a platform video game developed and published by Nintendo, released for the Nintendo Entertainment System in 1985. It is one of the best-selling video games of all time and is considered a landmark title in the history of video games.</p>
+<p>The game follows Mario, a plumber, as he travels through the Mushroom Kingdom to rescue Princess Toadstool from the villain Bowser. The game was designed by Shigeru Miyamoto and Takashi Tezuka.</p>
+<h2>Gameplay</h2>
+<p>The player controls Mario as he runs and jumps across platforms and atop enemies in various environments. The goal of the game is to reach the flagpole at the end of each level. Along the way, players collect coins and power-ups including the Super Mushroom, Fire Flower, and Super Star.</p>
+<ul>
+<li>8 worlds with 4 levels each</li>
+<li>Power-ups: Super Mushroom, Fire Flower, Starman</li>
+<li>Secret warp zones allow players to skip worlds</li>
+<li>Two-player alternating mode available</li>
+</ul>
+<h2>Development</h2>
+<p>Super Mario Bros. was developed as a successor to Mario Bros. (1983). Miyamoto wanted to create a game that could showcase the NES hardware's capabilities. The development team spent about one year creating the game, with Miyamoto leading the design and Koji Kondo composing the iconic soundtrack.</p>
+<h2>Legacy</h2>
+<p>Super Mario Bros. is widely regarded as one of the greatest video games ever made. It revitalized the North American video game industry following the video game crash of 1983. The franchise has since become the best-selling video game franchise of all time, with over 800 million games sold worldwide.</p>`
+  },
+  {
+    id: 'legend-of-zelda',
+    title: 'The Legend of Zelda',
+    category: 'games',
+    tag: '🎮 Games',
+    summary: 'Nintendo\'s epic action-adventure franchise featuring Link, Zelda, and the legendary Triforce.',
+    infobox: { 'Developer': 'Nintendo', 'First Released': '1986', 'Platform': 'Famicom Disk', 'Genre': 'Action-Adventure', 'Creator': 'Shigeru Miyamoto' },
+    toc: ['Overview', 'Story', 'Gameplay', 'Games in the Series'],
+    body: `<h2>Overview</h2>
+<p>The Legend of Zelda is an action-adventure game franchise created by game designers Shigeru Miyamoto and Takashi Tezuka and developed and published by Nintendo. The series centers on the various incarnations of Link, a courageous young man, and Princess Zelda, a magical princess.</p>
+<h2>Story</h2>
+<p>The games are set in the fictional kingdom of Hyrule. The main antagonist is Ganon (or Ganondorf), a powerful villain who seeks to obtain the Triforce — a relic with three golden triangles representing power, wisdom, and courage. Link must collect the pieces of the Triforce and use them to defeat Ganon and save Princess Zelda.</p>
+<h2>Gameplay</h2>
+<p>The Legend of Zelda combines action-adventure gameplay with role-playing game elements. Players control Link as he explores dungeons, fights enemies, solves puzzles, and collects items. The series is known for its open-world exploration, intricate dungeon design, and memorable music.</p>
+<ul>
+<li>Open-world exploration</li>
+<li>Dungeon-based puzzle solving</li>
+<li>Collectible weapons and items</li>
+<li>Iconic items like the Master Sword and Hyrule Shield</li>
+</ul>
+<h2>Games in the Series</h2>
+<p>The franchise includes over 19 main entries, including The Legend of Zelda (1986), A Link to the Past (1991), Ocarina of Time (1998) — widely considered one of the greatest games ever made — Breath of the Wild (2017), and Tears of the Kingdom (2023).</p>`
+  },
+  {
+    id: 'minecraft',
+    title: 'Minecraft',
+    category: 'games',
+    tag: '🎮 Games',
+    summary: 'The best-selling video game of all time, a sandbox world of infinite creativity and survival.',
+    infobox: { 'Developer': 'Mojang Studios', 'Released': '2011', 'Genre': 'Sandbox/Survival', 'Creator': 'Markus "Notch" Persson', 'Copies Sold': '300M+' },
+    toc: ['Overview', 'Game Modes', 'World Generation', 'Cultural Impact'],
+    body: `<h2>Overview</h2>
+<p>Minecraft is a sandbox video game developed by Mojang Studios. Created by Markus "Notch" Persson in the Java programming language, the game was released in 2011. It has since become the best-selling video game of all time, with over 300 million copies sold across all platforms.</p>
+<h2>Game Modes</h2>
+<p>Minecraft features several game modes catering to different playstyles:</p>
+<ul>
+<li><strong>Survival Mode:</strong> Players gather resources, build structures, and fight monsters to survive</li>
+<li><strong>Creative Mode:</strong> Unlimited resources and the ability to fly — pure building freedom</li>
+<li><strong>Adventure Mode:</strong> Custom maps with specific rules set by map creators</li>
+<li><strong>Hardcore Mode:</strong> Survival with permadeath — one life only</li>
+</ul>
+<h2>World Generation</h2>
+<p>Minecraft worlds are procedurally generated, meaning each world is unique. Worlds are divided into biomes — distinct environments like forests, deserts, tundras, and oceans. Underground, players can find caves, dungeons, and ore deposits. The
